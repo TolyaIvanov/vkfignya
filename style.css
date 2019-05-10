@@ -3,7 +3,13 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.4em;
-  font-size: 18px; }
+  font-size: 14px; }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none; }
 
 ul {
   padding: 0;
@@ -33,18 +39,60 @@ p {
     display: flex;
     justify-content: flex-start;
     padding: 50px 60px 0 60px;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    align-items: flex-start; }
     .wrapper .container .kanban-col {
       display: flex;
       justify-content: center;
       flex-direction: column;
-      min-width: 300px;
+      min-width: 310px;
       background-color: #ddd;
       -webkit-border-radius: 6px;
       -moz-border-radius: 6px;
-      border-radius: 6px; }
+      border-radius: 6px;
+      -webkit-transition: .3s;
+      -moz-transition: .3s;
+      -ms-transition: .3s;
+      -o-transition: .3s;
+      transition: .3s; }
       .wrapper .container .kanban-col .kanban-title {
-        color: #333; }
+        color: #333;
+        font-weight: 600; }
+      .wrapper .container .kanban-col .kanban-title:first-letter {
+        text-transform: uppercase; }
+      .wrapper .container .kanban-col .title-input {
+        -webkit-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+        box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+        height: 32px;
+        border-radius: 4px;
+        font-size: 16px;
+        padding: 4px 10px;
+        margin: 20px 8px;
+        border: none;
+        outline: none; }
+      .wrapper .container .kanban-col .card-input {
+        height: 70px;
+        width: 290px;
+        outline: none;
+        -moz-appearance: none;
+        border: none;
+        resize: none;
+        align-self: center;
+        -webkit-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+        box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+        background-color: #eaeaea;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        margin-top: 10px; }
+      .wrapper .container .kanban-col .kanban-card {
+        list-style-type: none; }
       .wrapper .container .kanban-col .add-col, .wrapper .container .kanban-col .add-item {
         display: flex;
         justify-content: flex-start;
@@ -57,17 +105,23 @@ p {
         -o-transition: .1s;
         transition: .1s;
         font-size: 20px;
-        padding: 8px 8px 8px 8px; }
+        padding: 10px; }
         .wrapper .container .kanban-col .add-col .button, .wrapper .container .kanban-col .add-item .button {
           position: relative;
-          width: 20px;
-          height: 20px;
-          margin-right: 10px;
-          /* Vertical line */
-          /* horizontal line */ }
+          width: 24px;
+          height: 24px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          margin: 0 6px;
+          /* Vertical line */ }
           .wrapper .container .kanban-col .add-col .button:before, .wrapper .container .kanban-col .add-col .button:after, .wrapper .container .kanban-col .add-item .button:before, .wrapper .container .kanban-col .add-item .button:after {
-            content: "";
             position: absolute;
+            left: 10px;
+            content: ' ';
+            height: 24px;
+            width: 2px;
             background-color: #afafaf;
             -webkit-transition: transform 0.25s ease-out;
             -moz-transition: transform 0.25s ease-out;
@@ -75,26 +129,54 @@ p {
             -o-transition: transform 0.25s ease-out;
             transition: transform 0.25s ease-out; }
           .wrapper .container .kanban-col .add-col .button:before, .wrapper .container .kanban-col .add-item .button:before {
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 100%;
-            margin-left: -1px; }
-          .wrapper .container .kanban-col .add-col .button:after, .wrapper .container .kanban-col .add-item .button:after {
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            margin-top: -2px; }
+            transform: rotate(90deg); }
         .wrapper .container .kanban-col .add-col:hover, .wrapper .container .kanban-col .add-item:hover {
           color: #757575; }
           .wrapper .container .kanban-col .add-col:hover .button, .wrapper .container .kanban-col .add-item:hover .button {
             animation: shake 0.5s linear both;
             transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
-            perspective: 100px; }
+            backface-visibility: hidden; }
             .wrapper .container .kanban-col .add-col:hover .button:before, .wrapper .container .kanban-col .add-col:hover .button:after, .wrapper .container .kanban-col .add-item:hover .button:before, .wrapper .container .kanban-col .add-item:hover .button:after {
               background-color: #757575; }
+      .wrapper .container .kanban-col .rendering-col {
+        cursor: default; }
+        .wrapper .container .kanban-col .rendering-col .add-item-text {
+          font-size: 15px;
+          transition: .2s;
+          display: inline-block;
+          text-align: center;
+          text-decoration: none;
+          margin: 2px 0;
+          border: solid 1px transparent;
+          border-radius: 4px;
+          padding: 8px 12px;
+          color: #ffffff;
+          background-color: #22AF29;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none; }
+        .wrapper .container .kanban-col .rendering-col .add-item-text:active {
+          transform: translateY(1px);
+          filter: saturate(150%); }
+        .wrapper .container .kanban-col .rendering-col .add-item-text:hover {
+          color: #333;
+          border-color: currentColor;
+          background-color: #eee; }
+        .wrapper .container .kanban-col .rendering-col:hover .button {
+          animation: none; }
+        .wrapper .container .kanban-col .rendering-col .button:before, .wrapper .container .kanban-col .rendering-col .button:after {
+          background-color: #757575; }
+        .wrapper .container .kanban-col .rendering-col .button:before {
+          transform: rotate(45deg); }
+        .wrapper .container .kanban-col .rendering-col .button:after {
+          transform: rotate(135deg); }
+        .wrapper .container .kanban-col .rendering-col .button:hover {
+          animation: shake 0.5s linear both;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden; }
+        .wrapper .container .kanban-col .rendering-col .button, .wrapper .container .kanban-col .rendering-col .add-item-text {
+          cursor: pointer; }
     .wrapper .container .kanban-col:not(:last-child) {
       margin-right: 100px; }
 
