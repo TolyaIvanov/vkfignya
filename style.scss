@@ -8,7 +8,6 @@ body {
 }
 
 input:focus,
-select:focus,
 textarea:focus,
 button:focus {
 	outline: none;
@@ -45,7 +44,7 @@ p {
 		margin: 0 auto;
 		display: flex;
 		justify-content: flex-start;
-		padding: 50px 60px 0 60px;
+		padding: 35px 40px 0 40px;
 		box-sizing: border-box;
 		align-items: flex-start;
 
@@ -53,7 +52,7 @@ p {
 			display: flex;
 			justify-content: center;
 			flex-direction: column;
-			min-width: 310px;
+			width: 310px;
 			background-color: #ddd;
 			-webkit-border-radius: 6px;
 			-moz-border-radius: 6px;
@@ -64,19 +63,145 @@ p {
 			-o-transition: .3s;
 			transition: .3s;
 
-			.kanban-title {
-				color: #333;
-				font-weight: 600;
+			.kanban-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.kanban-title {
+					color: #333;
+					font-weight: 600;
+					word-wrap: break-word;
+					max-width: 260px;
+				}
+			}
+
+			.close-column {
+				position: relative;
+				flex: 0 0 18px;
+				height: 18px;
+				display: none;
+				align-self: flex-start;
+				margin: 4px 4px 0 0;
+				cursor: pointer;
+
+				&:hover {
+					&:before {
+						transform: rotate(45deg);
+					}
+
+					&:after {
+						transform: rotate(-45deg);
+					}
+				}
+			}
+
+			.close-column:before, .close-column:after {
+				position: absolute;
+				content: ' ';
+				left: 8px;
+				height: 19px;
+				width: 2px;
+				background-color: #bbb;
+				-webkit-transition: 0.2s;
+				-moz-transition: 0.2s;
+				-ms-transition: 0.2s;
+				-o-transition: 0.2s;
+				transition: 0.2s;
+			}
+
+			.close-column:before {
+				transform: rotate(90deg);
+			}
+
+			.close-column:after {
+				transform: rotate(-90deg);
 			}
 
 			.kanban-title:first-letter {
 				text-transform: uppercase;
 			}
 
+			.kanban-list {
+				list-style-type: none;
+				align-self: center;
+				width: 300px;
+				padding: 0 5px;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				overflow: auto;
+				font-size: 15px;
+
+				.kanban-card {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					-webkit-box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.75);
+					-moz-box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.75);
+					box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.75);
+					padding: 10px;
+					background-color: #eaeaea;
+					border-radius: 5px;
+					margin-bottom: 10px;
+
+					.card-content {
+						white-space: pre-wrap;
+						max-width: 260px;
+						-ms-word-break: break-all;
+						word-break: break-all;
+						word-break: break-word;
+						-webkit-hyphens: auto;
+						-moz-hyphens: auto;
+						hyphens: auto;
+					}
+
+					.card-close {
+						position: relative;
+						flex: 0 0 16px;
+						height: 16px;
+						display: block;
+						cursor: pointer;
+
+						&:hover {
+							&:before {
+								transform: rotate(45deg);
+							}
+
+							&:after {
+								transform: rotate(-45deg);
+							}
+						}
+					}
+
+					.card-close:before, .card-close:after {
+						position: absolute;
+						content: ' ';
+						left: 8px;
+						height: 15px;
+						width: 2px;
+						background-color: #bbb;
+						-webkit-transition: 0.2s;
+						-moz-transition: 0.2s;
+						-ms-transition: 0.2s;
+						-o-transition: 0.2s;
+						transition: 0.2s;
+					}
+
+					.card-close:before {
+						transform: rotate(90deg);
+					}
+
+					.card-close:after {
+						transform: rotate(-90deg);
+					}
+				}
+			}
+
 			.title-input {
-				-webkit-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
-				-moz-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
-				box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
+				-webkit-box-shadow: 0 3px 7px -4px rgba(0, 0, 0, 0.75);
+				-moz-box-shadow: 0 3px 7px -4px rgba(0, 0, 0, 0.75);
+				box-shadow: 0 3px 7px -4px rgba(0, 0, 0, 0.75);
 				height: 32px;
 				border-radius: 4px;
 				font-size: 16px;
@@ -86,9 +211,34 @@ p {
 				outline: none;
 			}
 
-			.card-input {
-				height: 70px;
+			.textarea-hidden-div, .card-input {
+				font-family: Tahoma, Arial, 'Nimbus Sans L', sans-serif;
+				min-height: 80px;
 				width: 290px;
+				align-self: center;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				padding: 10px;
+				margin-top: 10px;
+				font-size: 15px;
+				-webkit-border-radius: 6px;
+				-moz-border-radius: 6px;
+				border-radius: 6px;
+				overflow: hidden;
+			}
+
+			.textarea-hidden-div {
+				display: flex;
+				max-height: 210px;
+				visibility: hidden;
+				position: absolute;
+				white-space: pre-wrap;
+				justify-content: flex-start;
+				flex-direction: column;
+			}
+
+			.card-input {
 				outline: none;
 				-moz-appearance: none;
 				border: none;
@@ -97,19 +247,7 @@ p {
 				-webkit-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
 				-moz-box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
 				box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.75);
-				-webkit-border-radius: 6px;
-				-moz-border-radius: 6px;
-				border-radius: 6px;
 				background-color: #eaeaea;
-				-webkit-box-sizing: border-box;
-				-moz-box-sizing: border-box;
-				box-sizing: border-box;
-				padding: 10px;
-				margin-top: 10px;
-			}
-
-			.kanban-card {
-				list-style-type: none;
 			}
 
 			.add-col, .add-item {
@@ -193,7 +331,6 @@ p {
 					-moz-user-select: none;
 					-ms-user-select: none;
 					user-select: none;
-
 				}
 
 				.add-item-text:active {
