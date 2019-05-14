@@ -45,7 +45,7 @@ p {
       display: flex;
       justify-content: center;
       flex-direction: column;
-      width: 310px;
+      min-width: 350px;
       max-height: 640px;
       background-color: #ddd;
       -webkit-border-radius: 6px;
@@ -98,7 +98,7 @@ p {
       .wrapper .container .kanban-col .kanban-list {
         list-style-type: none;
         align-self: center;
-        width: 300px;
+        width: 340px;
         padding: 0 5px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -166,7 +166,7 @@ p {
           transform: scale(0.9); }
       .wrapper .container .kanban-col .kanban-dragzone {
         height: 60px;
-        width: 290px;
+        width: 330px;
         border: 2px dashed #aaa;
         background-color: #eaeaea;
         -webkit-box-sizing: border-box;
@@ -176,6 +176,7 @@ p {
         display: flex;
         align-items: center;
         text-align: center;
+        -moz-opacity: .7;
         opacity: .7;
         font-size: 13px;
         font-weight: 300;
@@ -198,7 +199,7 @@ p {
       .wrapper .container .kanban-col .textarea-hidden-div, .wrapper .container .kanban-col .card-input {
         font-family: Tahoma, Arial, 'Nimbus Sans L', sans-serif;
         min-height: 80px;
-        width: 290px;
+        width: 330px;
         align-self: center;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;

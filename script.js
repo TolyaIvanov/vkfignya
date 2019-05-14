@@ -254,6 +254,10 @@ const dragDrop = (e) => {     // tyt
 		if (dragSrcEl !== el) {
 			dragSrcEl.innerHTML = el.innerHTML;
 			el.innerHTML = data;
+
+			event.stopPropagation();
+			dragSrcEl.getElementsByClassName('card-close')[0].addEventListener('click', deleteCard, false);
+			el.getElementsByClassName('card-close')[0].addEventListener('click', deleteCard, false);
 		}
 	}
 
@@ -288,11 +292,10 @@ const createDropSlots = (current) => {
 const createDraggableNode = (col) => {
 	let zone = document.createElement('li');
 	let list = col.getElementsByClassName('kanban-list')[0];
-	let text = document.createTextNode('Перетащите карточку в эту таблицу или поменяйте карточки местами');
 
 	zone.setAttribute('class', 'kanban-dragzone');
 	zone.draggable = true;
-	zone.appendChild(text);
+	zone.innerHTML = 'Перетащите карточку в эту таблицу или поменяйте карточки местами';
 
 	zone.addEventListener('dragenter', dragEnter, false);
 	zone.addEventListener('dragover', dragOver, false);
