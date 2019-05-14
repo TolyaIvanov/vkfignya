@@ -1,32 +1,32 @@
-window.onload = function () {
-	let column = document.getElementsByClassName('kanban-col')[0];
-	let addingColumnButton = document.getElementsByClassName('add-col')[0];
-	let deleteColumn = document.getElementsByClassName('close-column')[0];
+let column = document.getElementsByClassName('kanban-col')[0];
+let addingColumnButton = document.getElementsByClassName('add-col')[0];
+let deleteColumn = document.getElementsByClassName('close-column')[0];
 
-	addingColumnButton.addEventListener('click', function handler() {
-		addCol(addingColumnButton);
 
-		addingColumnButton.removeEventListener('click', handler);
-	}, false);
+addingColumnButton.addEventListener('click', function handler() {
+	addCol(addingColumnButton);
 
-	deleteColumn.addEventListener('click', function handler() {
-		column.remove();
+	addingColumnButton.removeEventListener('click', handler);
+}, false);
 
-		deleteColumn.removeEventListener('click', handler);
-	})
-};
+deleteColumn.addEventListener('click', function handler() {
+	column.remove();
 
-addCol = (point) => {
+	deleteColumn.removeEventListener('click', handler);
+});
+
+const addCol = (point) => {
 	let container = document.getElementsByClassName('container')[0];
 	let col = createCol();
 	let target = point.target ? point.target : point;
 
 	remasterButtons(target);
 	container.appendChild(col);
+
 	return col;
 };
 
-createCol = () => {
+const createCol = () => {
 	let column = document.createElement('div');
 	let columnHeader = document.createElement('div');
 	let columnTitle = document.createElement('p');
@@ -69,7 +69,7 @@ createCol = () => {
 	return column;
 };
 
-remasterButtons = (target) => {
+const remasterButtons = (target) => {
 	let button = target.getElementsByClassName('button')[0];
 	let textNode = target.getElementsByClassName('add-item-text')[0];
 	let thisColumn = findAncestor(target, '.kanban-col');
@@ -87,9 +87,7 @@ remasterButtons = (target) => {
 		deleteColumn.style.display = 'block';
 
 		input.remove();
-
 		swapButtons('Добавить еще одну карточку', target, textNode, button);
-
 		event.stopPropagation();
 
 		target.addEventListener('click', function handler() {                  // catch add card moment
@@ -107,7 +105,7 @@ remasterButtons = (target) => {
 	input.focus();
 };
 
-swapButtons = (text, wrapper, textNode, button, type, column) => {
+const swapButtons = (text, wrapper, textNode, button, type, column) => {
 	textNode.innerHTML = text;
 	button.classList.add('add-column-button');
 	wrapper.style.justifyContent = (type === 'addingCol' || type === 'addComment') ? 'space-between' : 'center';
@@ -132,7 +130,7 @@ swapButtons = (text, wrapper, textNode, button, type, column) => {
 	}
 };
 
-prepareForNewCard = () => {
+const prepareForNewCard = () => {
 	let textNode = event.target;
 	let wrapper = findAncestor(textNode, '.add-col');
 	let column = findAncestor(textNode, '.kanban-col');
@@ -144,17 +142,15 @@ prepareForNewCard = () => {
 
 	card ? list.appendChild(card) : input.remove();
 	textareaSizer && textareaSizer.remove();
-
 	swapButtons('Добавить еще одну карточку', wrapper, textNode, button);
-	event.stopPropagation();
-
 	addCardListener(wrapper, textNode, button);
+	event.stopPropagation();
 
 	button.removeEventListener('click', backForAdding);
 	textNode.removeEventListener('click', prepareForNewCard);
 };
 
-backForAdding = () => {
+const backForAdding = () => {
 	let button = event.target;
 	let column = findAncestor(button, '.kanban-col');
 	let textNode = column.getElementsByClassName('add-item-text')[0];
@@ -166,14 +162,13 @@ backForAdding = () => {
 	textareaSizer.remove();
 	swapButtons('Добавить еще одну карточку', wrapper, textNode, button);
 	event.stopPropagation();
-
 	addCardListener(wrapper, textNode, button);
 
 	button.removeEventListener('click', backForAdding);
 	textNode.removeEventListener('click', prepareForNewCard);
 };
 
-pasteInputOnEnter = (event) => {
+const pasteInputOnEnter = (event) => {
 	let column = findAncestor(event.target, '.kanban-col');
 	let submit = column.getElementsByClassName('add-item-text')[0];
 
@@ -184,7 +179,7 @@ pasteInputOnEnter = (event) => {
 	removeEventListener('keydown', pasteInputOnEnter);
 };
 
-addCardListener = (wrapper, textNode, button) => {
+const addCardListener = (wrapper, textNode, button) => {
 	wrapper.addEventListener('click', function handler() {
 		swapButtons('Добавить карточку', wrapper, textNode, button, 'addComment', findAncestor(wrapper, '.kanban-col'));
 
@@ -192,36 +187,154 @@ addCardListener = (wrapper, textNode, button) => {
 	});
 };
 
-removeCol = () => {
+const removeCol = () => {
 	let column = findAncestor(event.target, '.kanban-col');
 
 	column.remove();
 	this.removeEventListener('click', removeCol);
 };
 
-addCardItem = (input) => {
+const addCardItem = (input) => {
 	let card = document.createElement('li');
-	let deleteCard = document.createElement('span');
+	let removeCardButton = document.createElement('span');
 	let content = document.createElement('div');
 
 	content.setAttribute('class', 'card-content');
-	deleteCard.setAttribute('class', 'card-close');
+	removeCardButton.setAttribute('class', 'card-close');
 	content.innerHTML = input.value.replace(/<[^>]+>/g, '').trim().replace(/(\r\n|\r|\n)+/g, '$1').replace(/\n/g, '<br />');
 	card.classList.add('kanban-card');
+	card.draggable = true;
 	card.appendChild(content);
-	card.appendChild(deleteCard);
+	card.appendChild(removeCardButton);
 	input.remove();
 
-	deleteCard.addEventListener('click', function handler() {
-		findAncestor(content, '.kanban-card').remove();
+	removeCardButton.addEventListener('click', deleteCard, false);
 
-		deleteCard.removeEventListener('click', handler);
-	});
+	addDragListeners(card);
 
 	return card;
 };
 
-addInput = (type) => {
+const dragStart = (e) => {
+	let el = e.target;
+	let column = findAncestor(el, '.kanban-col');
+
+	createDropSlots(column);
+
+	el.style.opacity = '0.4';
+	dragSrcEl = el;
+	e.dataTransfer.effectAllowed = 'move';
+	e.dataTransfer.setData('text/html', this.innerHTML);
+};
+
+const dragEnter = (e) => {
+	e.target.classList.add('over');
+};
+
+const dragOver = (e) => {
+	e.preventDefault();
+	e.dataTransfer.dropEffect = 'move';
+
+	return false;
+};
+
+const dragLeave = (e) => {
+	e.stopPropagation();
+	e.target.classList.remove('over');
+};
+
+const dragDrop = (e) => {     // tyt
+	let el = e.target;
+	let data = dragSrcEl.innerHTML;
+
+	if (el.classList.contains('kanban-dragzone')) {
+		addCard(dragSrcEl.innerHTML, e.target);
+		dragSrcEl.remove();
+	} else {
+		if (dragSrcEl !== el) {
+			dragSrcEl.innerHTML = el.innerHTML;
+			el.innerHTML = data;
+		}
+	}
+
+	return false;
+};
+
+const dragEnd = (e) => {
+	let listItems = document.querySelectorAll('.kanban-card');
+	let dragzone = document.querySelectorAll('.kanban-dragzone');
+
+	[].forEach.call(listItems, function (item) {
+		item.classList.remove('over');
+	});
+
+	[].forEach.call(dragzone, function (item) {
+		item.remove();
+	});
+
+	e.target ? e.target.style.opacity = '1' : null;
+};
+
+const createDropSlots = (current) => {
+	let cols = document.getElementsByClassName('kanban-col');
+
+	[].forEach.call(cols, function (col) {
+		if (col !== cols[cols.length - 1] && col !== current) {
+			createDraggableNode(col);
+		}
+	});
+};
+
+const createDraggableNode = (col) => {
+	let zone = document.createElement('li');
+	let list = col.getElementsByClassName('kanban-list')[0];
+	let text = document.createTextNode('Перетащите карточку в эту таблицу или поменяйте карточки местами');
+
+	zone.setAttribute('class', 'kanban-dragzone');
+	zone.draggable = true;
+	zone.appendChild(text);
+
+	zone.addEventListener('dragenter', dragEnter, false);
+	zone.addEventListener('dragover', dragOver, false);
+	zone.addEventListener('dragleave', dragLeave, false);
+	zone.addEventListener('drop', dragDrop, false);
+	zone.addEventListener('dragend', dragEnd, false);
+
+	list.insertBefore(zone, list.firstChild);
+};
+
+const addCard = (data, zone) => {
+	let listElement = document.createElement('li');
+	let column = findAncestor(zone, '.kanban-col');
+	let list = column.getElementsByClassName('kanban-list')[0];
+
+	listElement.setAttribute('class', 'kanban-card');
+	listElement.innerHTML = data;
+	listElement.draggable = true;
+
+	listElement.getElementsByClassName('card-close')[0].addEventListener('click', deleteCard, false);
+
+	addDragListeners(listElement);
+
+	list.insertBefore(listElement, list.firstChild);
+};
+
+const deleteCard = (event) => {
+	findAncestor(event.target, '.kanban-card').remove();
+
+	event.target.removeEventListener('click', deleteCard);
+};
+
+const addDragListeners = (card) => {
+	card.addEventListener('dragstart', dragStart, false);
+	card.addEventListener('dragenter', dragEnter, false);
+	card.addEventListener('dragover', dragOver, false);
+	card.addEventListener('dragleave', dragLeave, false);
+	card.addEventListener('drop', dragDrop, false);
+	card.addEventListener('dragend', dragEnd, false);
+};
+
+const addInput = (type) => {
 	let input = document.createElement(`${type}`);
 
 	type === 'input' ? input.type = 'text' : null;
@@ -231,7 +344,7 @@ addInput = (type) => {
 	return input;
 };
 
-hiddenDivForTextarea = () => {
+const hiddenDivForTextarea = () => {
 	let hiddenDiv = document.createElement('div');
 
 	hiddenDiv.setAttribute('class', 'textarea-hidden-div');
@@ -239,7 +352,7 @@ hiddenDivForTextarea = () => {
 	return hiddenDiv;
 };
 
-resizeTextarea = () => {
+const resizeTextarea = () => {
 	let column = findAncestor(event.target, '.kanban-col');
 	let input = column.getElementsByClassName('card-input')[0];
 	let textareaResizer = column.getElementsByClassName('textarea-hidden-div')[0];
@@ -251,17 +364,16 @@ resizeTextarea = () => {
 		text = text + '<div>' + s.replace(/\s\s/g, ' &nbsp;') + '&nbsp;</div>' + "\n";
 	});
 
-	textareaResizer.innerHTML = text; // zalupa s size
+	textareaResizer.innerHTML = text;
+
 	if (splittedValue.length > 3) {
 		input.style.height = Math.min(textareaResizer.clientHeight + 5, maxHeight) + 'px';
 	} else {
 		input.style.height = '80px';
 	}
 
-	if (input.clientHeight === 210) {
+	if (input.style.height === '210px') {
 		input.style.overflow = 'auto';
-	} else {
-		input.style.overflow = 'hidden';
 	}
 };
 
@@ -269,15 +381,16 @@ function findAncestor(el, sel) {
 	if (typeof el.closest === 'function') {
 		return el.closest(sel) || null;
 	}
+
 	while (el) {
 		if (el.matches(sel)) {
 			return el;
 		}
 		el = el.parentElement;
 	}
+
 	return null;
 }
-
 
 if (!Element.prototype.matches) {
 	Element.prototype.matches =

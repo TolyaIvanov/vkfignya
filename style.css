@@ -3,7 +3,8 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.4em;
-  font-size: 14px; }
+  font-size: 14px;
+  display: grid; }
 
 input:focus,
 textarea:focus,
@@ -45,6 +46,7 @@ p {
       justify-content: center;
       flex-direction: column;
       width: 310px;
+      max-height: 640px;
       background-color: #ddd;
       -webkit-border-radius: 6px;
       -moz-border-radius: 6px;
@@ -113,7 +115,14 @@ p {
           padding: 10px;
           background-color: #eaeaea;
           border-radius: 5px;
-          margin-bottom: 10px; }
+          margin-bottom: 10px;
+          will-change: transform;
+          -webkit-transition: all .2s;
+          -moz-transition: all .2s;
+          -ms-transition: all .2s;
+          -o-transition: all .2s;
+          transition: all .2s;
+          position: relative; }
           .wrapper .container .kanban-col .kanban-list .kanban-card .card-content {
             white-space: pre-wrap;
             max-width: 260px;
@@ -149,6 +158,32 @@ p {
             transform: rotate(90deg); }
           .wrapper .container .kanban-col .kanban-list .kanban-card .card-close:after {
             transform: rotate(-90deg); }
+        .wrapper .container .kanban-col .kanban-list .over {
+          -webkit-transform: scale(0.9);
+          -moz-transform: scale(0.9);
+          -ms-transform: scale(0.9);
+          -o-transform: scale(0.9);
+          transform: scale(0.9); }
+      .wrapper .container .kanban-col .kanban-dragzone {
+        height: 60px;
+        width: 290px;
+        border: 2px dashed #aaa;
+        background-color: #eaeaea;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        opacity: .7;
+        font-size: 13px;
+        font-weight: 300;
+        -webkit-transition: all .2s;
+        -moz-transition: all .2s;
+        -ms-transition: all .2s;
+        -o-transition: all .2s;
+        transition: all .2s; }
       .wrapper .container .kanban-col .title-input {
         -webkit-box-shadow: 0 3px 7px -4px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: 0 3px 7px -4px rgba(0, 0, 0, 0.75);
@@ -205,7 +240,11 @@ p {
         -o-transition: .1s;
         transition: .1s;
         font-size: 20px;
-        padding: 10px; }
+        padding: 10px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none; }
         .wrapper .container .kanban-col .add-col .button, .wrapper .container .kanban-col .add-item .button {
           position: relative;
           width: 24px;
@@ -278,7 +317,7 @@ p {
         .wrapper .container .kanban-col .rendering-col .button, .wrapper .container .kanban-col .rendering-col .add-item-text {
           cursor: pointer; }
     .wrapper .container .kanban-col:not(:last-child) {
-      margin-right: 100px; }
+      margin-right: 20px; }
 
 @keyframes shake {
   10% {

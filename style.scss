@@ -5,6 +5,7 @@ body {
 	padding: 0;
 	line-height: 1.4em;
 	font-size: 14px;
+	display: grid;
 }
 
 input:focus,
@@ -53,6 +54,7 @@ p {
 			justify-content: center;
 			flex-direction: column;
 			width: 310px;
+			max-height: 640px;
 			background-color: #ddd;
 			-webkit-border-radius: 6px;
 			-moz-border-radius: 6px;
@@ -144,6 +146,13 @@ p {
 					background-color: #eaeaea;
 					border-radius: 5px;
 					margin-bottom: 10px;
+					will-change: transform;
+					-webkit-transition: all .2s;
+					-moz-transition: all .2s;
+					-ms-transition: all .2s;
+					-o-transition: all .2s;
+					transition: all .2s;
+					position: relative;
 
 					.card-content {
 						white-space: pre-wrap;
@@ -196,6 +205,36 @@ p {
 						transform: rotate(-90deg);
 					}
 				}
+
+				.over {
+					-webkit-transform: scale(0.9);
+					-moz-transform: scale(0.9);
+					-ms-transform: scale(0.9);
+					-o-transform: scale(0.9);
+					transform: scale(0.9);
+				}
+			}
+
+			.kanban-dragzone {
+				height: 60px;
+				width: 290px;
+				border: 2px dashed #aaa;
+				background-color: #eaeaea;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				margin: 10px 0;
+				display: flex;
+				align-items: center;
+				text-align: center;
+				opacity: .7;
+				font-size: 13px;
+				font-weight: 300;
+				-webkit-transition: all .2s;
+				-moz-transition: all .2s;
+				-ms-transition: all .2s;
+				-o-transition: all .2s;
+				transition: all .2s;
 			}
 
 			.title-input {
@@ -263,6 +302,10 @@ p {
 				transition: .1s;
 				font-size: 20px;
 				padding: 10px;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 
 				.button {
 					position: relative;
@@ -377,7 +420,7 @@ p {
 		}
 
 		.kanban-col:not(:last-child) {
-			margin-right: 100px;
+			margin-right: 20px;
 		}
 	}
 }
